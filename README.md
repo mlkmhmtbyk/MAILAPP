@@ -1,2 +1,2 @@
 # MAILAPP
-Sending mail desktop app with speech recognition
+Sending mail desktop application with speech recognition
