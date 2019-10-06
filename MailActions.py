@@ -1,16 +1,27 @@
-import os
-import smtplib
+import imaplib, email
 
-with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
-    smtp.ehlo()
-    smtp.starttls()
-    smtp.ehlo()
+user = "compproj1itu@gmail.com"
+password = "Compproj1010"
+imapUrl = "imap.gmail.com"
 
-    smtp.login("compproj1itu@gmail.com","Compproj1010")
+def GetBody(msg):
+    if msg.is_multipart():
+        return GetBody(msg.get_payload(0))
+    else:
+        return msg.get_payload(None, True)
 
-    subject = "Grab dinner this weekend?"
-    body = 'How about dinner at 6pm this saturday?'
+def search(key,value,con):
+    result, data = con.search(None,key,'"()"'.format(value))
+    debugger = "debugger"
+    return data
 
-    msg = f'Subject: {subject}\n\n{body}'
+con = imaplib.IMAP4_SSL(imapUrl)
+con.login(user, password)
+con.select("INBOX")
+result, data = con.fetch(b'2','(RFC822)')
+raw = email.message_from_bytes(data[0][1])
+print(GetBody(raw))
 
-    smtp.sendmail("conpproj1itu@gmail.com", "mlkmhmtbyk@gmail.com", msg)
+#search("FROM","mlkmhmtbyk@gma.com",con)
+
+debugger = "debugger"
